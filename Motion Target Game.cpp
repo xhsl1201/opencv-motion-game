@@ -8,8 +8,8 @@
 
 struct Ball
 {
-    cv::Point position;   // °ø Áß½É ÁÂÇ¥
-    int radius;           // °ø ¹İÁö¸§
+    cv::Point position;   // ê³µ ì¤‘ì‹¬ ì¢Œí‘œ
+    int radius;           // ê³µ ë°˜ì§€ë¦„
     int colorType;        // 0:red, 1:green, 2:blue
 
     Ball()
@@ -20,7 +20,7 @@ struct Ball
     }
 };
 
-// °øÀÌ È­¸é ¹ÛÀ¸·Î ³ª°¡Áö ¾Êµµ·Ï ·£´ı À§Ä¡ »ı¼º
+// ê³µì´ í™”ë©´ ë°–ìœ¼ë¡œ ë‚˜ê°€ì§€ ì•Šë„ë¡ ëœë¤ ìœ„ì¹˜ ìƒì„±
 cv::Point getRandomPosition9(int width, int height, int radius)
 {
     int x = rand() % (width - 2 * radius) + radius;
@@ -28,7 +28,7 @@ cv::Point getRandomPosition9(int width, int height, int radius)
     return cv::Point(x, y);
 }
 
-// Å¸°Ù »ö °øÀÌ ÃÖ¼Ò 1°³ Á¸ÀçÇÏµµ·Ï º¸Àå
+// íƒ€ê²Ÿ ìƒ‰ ê³µì´ ìµœì†Œ 1ê°œ ì¡´ì¬í•˜ë„ë¡ ë³´ì¥
 void ensureTargetExists9(std::vector<Ball>& balls, int targetColor)
 {
     for (int i = 0; i < balls.size(); i++)
@@ -39,7 +39,7 @@ void ensureTargetExists9(std::vector<Ball>& balls, int targetColor)
     balls[0].colorType = targetColor;
 }
 
-// °ø ¸®¼Â ÇÔ¼ö
+// ê³µ ë¦¬ì…‹ í•¨ìˆ˜
 void resetBall9(Ball& b, int width, int height)
 {
     b.radius = rand() % 20 + 40;
@@ -58,7 +58,7 @@ void runProject9()
     cv::VideoCapture cap(0);
     if (!cap.isOpened())
     {
-        std::cerr << "À¥Ä·ÀÌ ¾ø½À´Ï´Ù.\n";
+        std::cerr << "ì›¹ìº ì´ ì—†ìŠµë‹ˆë‹¤.\n";
         return;
     }
 
@@ -68,7 +68,7 @@ void runProject9()
 
     if (imgRed.empty() || imgGreen.empty() || imgBlue.empty())
     {
-        std::cerr << "ÀÌ¹ÌÁö ·Îµå ½ÇÆĞ\n";
+        std::cerr << "ì´ë¯¸ì§€ ë¡œë“œ ì‹¤íŒ¨\n";
         return;
     }
 
@@ -77,7 +77,7 @@ void runProject9()
 
     cv::Mat prev_gray;
 
-    // °ø »ı¼º
+    // ê³µ ìƒì„±
     std::vector<Ball> balls;
     int ballCount = 5;
     int scores[3] = { 0,0,0 };
@@ -93,7 +93,7 @@ void runProject9()
     }
     ensureTargetExists9(balls, targetColor);
 
-    // °ÔÀÓ ½Ã°£
+    // ê²Œì„ ì‹œê°„
     int experimentTime = 30;
     int64 startTick = cv::getTickCount();
     double freq = cv::getTickFrequency();
@@ -117,7 +117,7 @@ void runProject9()
                 finished = true;
             }
 
-            // ¿òÁ÷ÀÓ °¨Áö
+            // ì›€ì§ì„ ê°ì§€
             cv::cvtColor(frame, gray, cv::COLOR_BGR2GRAY);
             cv::GaussianBlur(gray, gray, cv::Size(15, 15), 0);
 
@@ -134,7 +134,7 @@ void runProject9()
                 cv::MORPH_RECT, cv::Size(5, 5));
             cv::morphologyEx(thresh, thresh, cv::MORPH_OPEN, kernel);
 
-            // °ø ÅÍÄ¡ ÆÇÁ¤
+            // ê³µ í„°ì¹˜ íŒì •
             for (int i = 0; i < balls.size(); i++)
             {
                 Ball& b = balls[i];
@@ -242,7 +242,7 @@ void runProject9()
                 cv::Scalar(255, 255, 255), 2);
         }
 
-        // °ø ±×¸®±â
+        // ê³µ ê·¸ë¦¬ê¸°
         for (int i = 0; i < balls.size(); i++)
         {
             cv::Mat* img =
